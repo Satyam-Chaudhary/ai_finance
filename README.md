@@ -31,7 +31,7 @@ This is a smart financial analytics backend that simulates real-time bank transa
 
 TO DOs
 
-## 📝 Project Roadmap
+## 📝 Backend Project Roadmap
 
 ### Phase 1: Core System – ✅ Completed
 - [x] Create SQLite DB with tables: transactions, suspicious_transactions
