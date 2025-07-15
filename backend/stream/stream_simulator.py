@@ -39,7 +39,7 @@ def simulate_transaction_stream():
         except Exception as e:
             print("❌ DB Error:", e)
 
-        time.sleep(3)  # Simulate delay (like Kafka event)
+        time.sleep(3)  
 
 if __name__ == "__main__":
     simulate_transaction_stream()

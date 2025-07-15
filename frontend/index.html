@@ -8,40 +8,47 @@
 <body>
   <h1>🚨 Suspicious Transactions</h1>
 
-  
+  <!-- Dashboard controls -->
+  <div class="dashboard-controls" style="margin-bottom: 1rem;">
+    <label for="view-mode">View:</label>
+    <select id="view-mode">
+      <option value="suspicious">Suspicious Only</option>
+      <option value="all">All Transactions</option>
+    </select>
 
+    <label for="bank-filter" style="margin-left: 1rem;">Bank:</label>
+    <select id="bank-filter">
+      <option value="">All</option>
+    </select>
 
+    <label for="category-filter" style="margin-left: 1rem;">Category:</label>
+    <select id="category-filter">
+      <option value="">All</option>
+    </select>
+  </div>
+
+  <!-- Summary -->
+  <div id="summary" style="font-weight: bold; margin-bottom: 1rem;"></div>
+
+  <!-- Table -->
   <table id="txn-table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Bank</th>
-      <th>Amount</th>
-      <th>Description</th>
-      <th>Category</th>
-      <th>Suspicious Reason</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Bank</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Suspicious Reason</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-<div id="summary" style="margin-bottom: 1rem; font-weight: bold;"></div>
+  <!-- Chart -->
+  <canvas id="txn-chart" width="600" height="300" style="margin-top: 2rem;"></canvas>
 
-
-<div style="margin-bottom: 1rem;">
-  <label for="bank-filter">Bank:</label>
-  <select id="bank-filter">
-    <option value="">All</option>
-  </select>
-
-  <label for="category-filter" style="margin-left: 1rem;">Category:</label>
-  <select id="category-filter">
-    <option value="">All</option>
-  </select>
-</div>
-
-<canvas id="txn-chart" width="600" height="300" style="margin-bottom: 2rem;"></canvas>
-
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
 </body>

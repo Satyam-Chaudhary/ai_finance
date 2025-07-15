@@ -8,7 +8,7 @@ def get_transactions():
     return [
         {
             "transaction_id": "b2-tx1",
-            "amount": "3200.00",
+            "amount": "3200000000.00",
             "description": "Uber Ride to Airport",
             "date": datetime.now().strftime("%Y-%m-%d"),
             "account_no": "XXXX5678"
