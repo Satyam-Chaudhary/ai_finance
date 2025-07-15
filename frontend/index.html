@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Finance Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>🚨 Suspicious Transactions</h1>
+
+  
+
+
+  <table id="txn-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Bank</th>
+      <th>Amount</th>
+      <th>Description</th>
+      <th>Category</th>
+      <th>Suspicious Reason</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<div id="summary" style="margin-bottom: 1rem; font-weight: bold;"></div>
+
+
+<div style="margin-bottom: 1rem;">
+  <label for="bank-filter">Bank:</label>
+  <select id="bank-filter">
+    <option value="">All</option>
+  </select>
+
+  <label for="category-filter" style="margin-left: 1rem;">Category:</label>
+  <select id="category-filter">
+    <option value="">All</option>
+  </select>
+</div>
+
+<canvas id="txn-chart" width="600" height="300" style="margin-bottom: 2rem;"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
