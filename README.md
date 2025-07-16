@@ -80,3 +80,11 @@ TO DOs
 - [ ] Deployment (Render/railway/vercel/localhost)
 - [ ] Use .env for config and secrets
 
+---
+
+## Backend workflow
+
+![design](/pictures/Screenshot%202025-07-16%20at%209.46.38 PM.png)
+
+---
+

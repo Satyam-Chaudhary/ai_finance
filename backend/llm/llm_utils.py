@@ -3,11 +3,10 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 import json
 
-# Load Gemini API key from .env
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Use Gemini Pro Flash (free, fast, accurate)
+
 model = genai.GenerativeModel(model_name="models/gemini-2.5-flash")
 
 def enrich_transaction(description: str, amount: float) -> dict:
@@ -32,7 +31,7 @@ If unsure, set category to "others" and suspicious_reason to null.
 
 def parse_llm_json(text: str) -> dict:
     try:
-        # Remove triple backticks and "json" label if present
+        
         if text.startswith("json"):
             text = text[len("json"):].strip()
         elif text.startswith("```json"):
@@ -47,7 +46,6 @@ def parse_llm_json(text: str) -> dict:
             "suspicious_reason": "error parsing response"
         }
 
-# Example Usage
 if __name__ == "__main__":
     txn = enrich_transaction("Uber to Airport", 325)
     print(txn)
