@@ -1,55 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>AI Finance Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <h1>🚨 Suspicious Transactions</h1>
+<html lang="en" class="h-full bg-gray-900">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Finance Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Added a version query to force the browser to reload the stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="h-full text-gray-200">
+    <!-- Auth Container -->
+    <div
+      id="auth-container"
+      class="flex items-center justify-center min-h-screen bg-gray-900"
+    >
+      <div
+        class="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg"
+      >
+        <div>
+          <h2 id="auth-title" class="text-3xl font-bold text-center text-white">
+            Login
+          </h2>
+          <p class="mt-2 text-sm text-center text-gray-400">
+            Or
+            <a
+              href="#"
+              id="toggle-auth-mode"
+              class="font-medium text-indigo-400 hover:text-indigo-300"
+              >sign up for a new account</a
+            >
+          </p>
+        </div>
+        <form id="auth-form" class="space-y-6">
+          <div>
+            <label for="email" class="text-sm font-medium text-gray-300"
+              >Email address</label
+            >
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              class="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label for="password" class="text-sm font-medium text-gray-300"
+              >Password</label
+            >
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="w-full px-3 py-2 mt-1 text-white bg-gray-700 border border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              class="w-full px-4 py-2 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-gray-800"
+            >
+              Sign In
+            </button>
+          </div>
+        </form>
+        <p id="auth-error" class="text-sm text-center text-red-400"></p>
+      </div>
+    </div>
 
-  <!-- Dashboard controls -->
-  <div class="dashboard-controls" style="margin-bottom: 1rem;">
-    <label for="view-mode">View:</label>
-    <select id="view-mode">
-      <option value="suspicious">Suspicious Only</option>
-      <option value="all">All Transactions</option>
-    </select>
+    <!-- Dashboard Container (hidden by default) -->
+    <div id="dashboard-container" class="hidden p-4 md:p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold text-white">AI Finance Dashboard</h1>
+        <button
+          id="logout-btn"
+          class="cursor-pointer px-4 py-2 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-700"
+        >
+          Logout
+        </button>
+      </div>
 
-    <label for="bank-filter" style="margin-left: 1rem;">Bank:</label>
-    <select id="bank-filter">
-      <option value="">All</option>
-    </select>
+      <!-- Dashboard controls -->
+      <div class="grid grid-cols-1 gap-4 mb-6 md:grid-cols-3">
+        <div class="p-4 bg-gray-800 rounded-lg">
+          <label
+            for="view-mode"
+            class="block mb-2 text-sm font-medium text-gray-400"
+            >View Mode</label
+          >
+          <select
+            id="view-mode"
+            class="w-full p-2 text-white bg-gray-700 border-gray-600 rounded-md"
+          >
+            <option value="suspicious">Suspicious Only</option>
+            <option value="all">All Transactions</option>
+          </select>
+        </div>
+        <div class="p-4 bg-gray-800 rounded-lg">
+          <label
+            for="bank-filter"
+            class="block mb-2 text-sm font-medium text-gray-400"
+            >Filter by Bank</label
+          >
+          <select
+            id="bank-filter"
+            class="w-full p-2 text-white bg-gray-700 border-gray-600 rounded-md"
+          >
+            <option value="">All</option>
+          </select>
+        </div>
+        <div class="p-4 bg-gray-800 rounded-lg">
+          <label
+            for="category-filter"
+            class="block mb-2 text-sm font-medium text-gray-400"
+            >Filter by Category</label
+          >
+          <select
+            id="category-filter"
+            class="w-full p-2 text-white bg-gray-700 border-gray-600 rounded-md"
+          >
+            <option value="">All</option>
+          </select>
+        </div>
+      </div>
 
-    <label for="category-filter" style="margin-left: 1rem;">Category:</label>
-    <select id="category-filter">
-      <option value="">All</option>
-    </select>
-  </div>
+      <!-- Summary -->
+      <div id="summary" class="p-4 mb-6 bg-gray-800 rounded-lg"></div>
 
-  <!-- Summary -->
-  <div id="summary" style="font-weight: bold; margin-bottom: 1rem;"></div>
+      <!-- Table -->
+      <div class="p-4 bg-gray-800 rounded-lg">
+        <h2 class="mb-4 text-xl font-semibold">Transactions</h2>
+        <div class="table-responsive">
+          <table id="txn-table" class="w-full text-left">
+            <thead class="bg-gray-700">
+              <tr>
+                <th class="p-3">ID</th>
+                <th class="p-3">Bank</th>
+                <th class="p-3">Amount</th>
+                <th class="p-3">Description</th>
+                <th class="p-3">Category</th>
+                <th class="p-3">Suspicious Reason</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-700"></tbody>
+          </table>
+        </div>
+      </div>
 
-  <!-- Table -->
-  <table id="txn-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Bank</th>
-        <th>Amount</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Suspicious Reason</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+      <!-- Chart -->
+      <div class="p-4 mt-6 bg-gray-800 rounded-lg h-96">
+        <h2 class="mb-4 text-xl font-semibold">Spending by Category</h2>
+        <canvas id="txn-chart"></canvas>
+      </div>
+    </div>
 
-  <!-- Chart -->
-  <canvas id="txn-chart" width="600" height="300" style="margin-top: 2rem;"></canvas>
+    <!-- Notification Toast -->
+    <div
+      id="notification"
+      class="fixed top-5 right-5 p-4 text-white bg-red-500 rounded-lg shadow-lg opacity-0 transition-opacity duration-300"
+    >
+      <p class="font-bold">⚠️ Suspicious Transaction!</p>
+      <p id="notification-text"></p>
+    </div>
 
-  <!-- JS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="app.js"></script>
-</body>
+    <!-- Link to your external JavaScript file -->
+    <script src="app.js" defer></script>
+  </body>
 </html>

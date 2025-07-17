@@ -1,24 +1,25 @@
-body {
-  font-family: sans-serif;
-  padding: 20px;
-  background: #f9f9f9;
+body { 
+  font-family: 'Inter', sans-serif; 
+}
+#logout-btn {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+  }
+  
+button {
+  cursor: pointer;
 }
 
-h1 {
-  color: #d62828;
+.table-responsive { 
+  display: block; 
+  width: 100%; 
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch; 
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
+@media (max-width: 640px) {
+  th, td { 
+    white-space: nowrap; 
+  }
 }
 
-th, td {
-  padding: 10px;
-  border: 1px solid #ddd;
-}
-
-th {
-  background: #f4f4f4;
-}

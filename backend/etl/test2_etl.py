@@ -14,7 +14,7 @@ def get_or_create_default_user(db_session):
     Checks for a default user and creates one if it doesn't exist.
     Returns the user object.
     """
-    default_email = "test@example.com"
+    default_email = "user@example.com"
     user = db_session.query(User).filter_by(email=default_email).first()
     
     if not user:
