@@ -2,19 +2,17 @@ import httpx
 import json
 from datetime import datetime
 
-from backend.etl.etl import normalize_bank1, normalize_bank2
+from backend.etl.etl import  normalize_bank2
 from backend.llm.llm_utils import enrich_transaction
 from backend.db.db import init_db, SessionLocal
 from backend.db.models import Transaction, User
 from backend.db.auth_utils import hash_password
 from backend.stream.kafka_producer import send_suspicious_to_kafka  
 
-def get_or_create_default_user(db_session):
-    """
-    Checks for a default user and creates one if it doesn't exist.
-    Returns the user object.
-    """
-    default_email = "user@example.com"
+
+def get_or_create_default_user(db_session, default_email="user@example.com", password="testpassword"):
+    
+    # default_email = "user@example.com"
     user = db_session.query(User).filter_by(email=default_email).first()
     
     if not user:
@@ -31,34 +29,34 @@ def get_or_create_default_user(db_session):
     return user
 
 def test_etl_pipeline():
-    init_db()
     db = SessionLocal()
 
     try:
         default_user = get_or_create_default_user(db)
 
         try:
-            b1 = httpx.get("http://localhost:8001/bank1/transactions").json()
+            # b1 = httpx.get("http://localhost:8001/bank1/transactions").json()
             b2 = httpx.get("http://localhost:8001/bank2/transactions").json()
         except httpx.ConnectError:
             print("\n❌ Connection Error: Could not connect to the FastAPI server.")
             print("Please ensure the server is running in a separate terminal with 'uvicorn backend.api.main:app --port 8001'.")
             return
 
-        bank1_clean = normalize_bank1(b1)
+        # bank1_clean = normalize_bank1(b1)
         bank2_clean = normalize_bank2(b2)
-        all_txns = bank1_clean + bank2_clean
+        all_txns = bank2_clean
 
         print(f"\nProcessing transactions for user ID: {default_user.id}...")
         for tx in all_txns:
             # FIX: Add the user_id directly to the transaction dictionary
             tx['user_id'] = default_user.id
+            unique_txn_id = f"user2-{tx['txn_id']}"
             
             enrich = enrich_transaction(tx["description"], tx["amount"])
             tx.update(enrich)
 
             txn_obj = Transaction(
-                id=tx["txn_id"],
+                id=unique_txn_id,
                 bank=tx["bank"],
                 amount=tx["amount"],
                 description=tx["description"],
@@ -71,7 +69,7 @@ def test_etl_pipeline():
             db.merge(txn_obj)
 
             if tx["suspicious_reason"]:
-                # Now the 'tx' dictionary correctly contains the user_id
+                tx['txn_id'] = unique_txn_id
                 send_suspicious_to_kafka(tx)
 
         db.commit()
@@ -82,6 +80,13 @@ def test_etl_pipeline():
         db.rollback()
     finally:
         db.close()
+
+def main():
+    init_db()
+    db = SessionLocal()
+    user = get_or_create_default_user(db)
+    db.close()
+    test_etl_pipeline(user.id)
 
 if __name__ == "__main__":
     test_etl_pipeline()

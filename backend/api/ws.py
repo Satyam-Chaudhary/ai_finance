@@ -33,7 +33,7 @@ class ConnectionManager:
             # Create a list of tasks to send messages concurrently
             tasks = [conn.send_text(message_str) for conn in self.active_connections[user_id]]
             await asyncio.gather(*tasks)
-            print(f"📬 Sent message to user {user_id}.")
+            print(f"Sent message to user {user_id}.")
 
 manager = ConnectionManager()
 

@@ -19,5 +19,19 @@ def get_transactions():
             "description": "Jewellery Purchase - Tanishq",
             "date": datetime.now().strftime("%Y-%m-%d"),
             "account_no": "XXXX5678"
+        },
+        {
+            "transaction_id": "b2-tx3",
+            "amount": "5000.00",
+            "description": "Grocery Shopping - Big Bazaar",
+            "date": datetime.now().strftime("%Y-%m-%d"),
+            "account_no": "XXXX5678"
+        },
+        {
+            "transaction_id": "b2-tx4",
+            "amount": "25000.00",
+            "description": "Electricity Bill Payment",
+            "date": datetime.now().strftime("%Y-%m-%d"),
+            "account_no": "XXXX5678"
         }
     ]
