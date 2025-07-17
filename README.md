@@ -1,8 +1,9 @@
-# 💸 Real-Time Financial Dashboard with LLM Integration
+#  Real-Time Financial Dashboard with LLM Integration
 
 This is a smart financial analytics backend that simulates real-time bank transactions, categorizes them using an LLM, detects anomalies, and generates insightful weekly summaries and forecasts. Built with **FastAPI**, **SQLite**, **Kafka**, and **LLMs**
 
 ---
+## next -> automate etl when user login. to be done tomorrow(18/07/2025)
 
 ## 🚀 Features
 
