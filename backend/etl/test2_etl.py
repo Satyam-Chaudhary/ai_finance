@@ -7,7 +7,8 @@ from backend.llm.llm_utils import enrich_transaction
 from backend.db.db import init_db, SessionLocal
 from backend.db.models import Transaction, User
 from backend.db.auth_utils import hash_password
-from backend.stream.kafka_producer import send_suspicious_to_kafka  
+from backend.stream.kafka_producer import send_suspicious_to_kafka 
+from backend.llm.llm_utils_2 import enrich_transaction2 
 
 
 def get_or_create_default_user(db_session, default_email="user@example.com", password="testpassword"):
@@ -52,7 +53,7 @@ def test_etl_pipeline():
             tx['user_id'] = default_user.id
             unique_txn_id = f"user2-{tx['txn_id']}"
             
-            enrich = enrich_transaction(tx["description"], tx["amount"])
+            enrich = enrich_transaction2(tx["description"], tx["amount"])
             tx.update(enrich)
 
             txn_obj = Transaction(
